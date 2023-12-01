@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -49,7 +49,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
             title="Settings"
             description="Manage store preferences"
             />
-            <Button variant="destructive" size="icon" ><Trash className="h-4 w-4"/></Button>
+            <Button disabled={loading} variant="destructive" size="icon" onClick={() => setOpen(true)}><Trash className="h-4 w-4"/></Button>
         </div>
         <Separator/>
         <Form {...form}>
@@ -64,6 +64,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                             <FormControl>
                                 <Input disabled={loading} placeholder="Store name" {...field}/>
                             </FormControl>
+                            <FormMessage/>
                         </FormItem>
                     )}
                    />
