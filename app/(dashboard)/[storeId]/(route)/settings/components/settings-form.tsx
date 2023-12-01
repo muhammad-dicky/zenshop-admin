@@ -7,9 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Store } from "@prisma/client";
+import axios from "axios";
 import { Trash } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as z from "zod";
 
 
@@ -29,6 +32,11 @@ type SettingsFormValues = z.infer<typeof formSchema>;
 const SettingsForm: React.FC<SettingsFormProps> = ({
     initialData
 }) => {
+    const params = useParams();
+    const router = useRouter();
+
+
+
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -38,7 +46,16 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
     })
 
     const onSubmit = async (data: SettingsFormValues) => {
-        console.log(data);
+        try {
+            setLoading(true);
+            await axios.patch(`/api/stores/${params.storeId}`, data);
+            router.refresh();
+            toast.success("Store updated.");
+        } catch (error) {
+            toast.error("Something went wrong.")
+        } finally{
+            setLoading(false);
+        }
     }
 
 
@@ -49,7 +66,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
             title="Settings"
             description="Manage store preferences"
             />
-            <Button disabled={loading} variant="destructive" size="icon" onClick={() => setOpen(true)}><Trash className="h-4 w-4"/></Button>
+            <Button disabled={loading} variant="destructive" size="icon" onClick={() => setOpen}><Trash className="h-4 w-4"/></Button>
         </div>
         <Separator/>
         <Form {...form}>
