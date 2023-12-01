@@ -53,7 +53,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         </div>
         <Separator/>
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-x-8 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
                 <div className="grid grid-cols-3 gap-8">
                     <FormField 
                     control={form.control}
@@ -66,10 +66,11 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                             </FormControl>
                         </FormItem>
                     )}
-                    >
-
-                    </FormField>
+                   />
                 </div>
+                <Button disabled={loading} className="ml-auto" type="submit">
+                    Submit changes
+                </Button>
             </form>
         </Form>
         </>
