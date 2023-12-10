@@ -19,7 +19,7 @@ req: Request,
         }
         
         if(!name){
-            return new NextResponse("Name is requred", {status:400})
+            return new NextResponse("Name is requred", {status:400});
         }
 
         if(!params.storeId){
