@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import Heading from "@/components/ui/heading";
 import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useOrigin } from "@/hooks/use-origin";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +25,7 @@ import * as z from "zod";
 
 interface CategoryFormProps{
     initialData: Category | null;
+    billboards: Billboard[];
 }
 
 
@@ -37,7 +38,8 @@ type CategoryFormValues = z.infer<typeof formSchema>;
 
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
-    initialData
+    initialData,
+    billboards
 }) => {
     const params = useParams();
     const router = useRouter();
@@ -84,12 +86,12 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+            await axios.delete(`/api/${params.storeId}/categories/${params.categoryId}`);
             router.refresh();
-            router.push(`/${params.storeId}/billboards`);
+            router.push(`/${params.storeId}/categories`);
             toast.success("Categoriess deleted.");
         } catch (error) {
-            toast.error("Make sure you removed all categoires using this billboard first.");
+            toast.error("Make sure you removed all product using this category first.");
             console.log(error)
         } finally{
             setLoading(false);
@@ -164,7 +166,14 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    
+                                    {billboards.map((billboard) => (
+                                        <SelectItem
+                                        key={billboard.id}
+                                        value={billboard.id}
+                                        >
+                                            {billboard.label}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                             <FormMessage/>
