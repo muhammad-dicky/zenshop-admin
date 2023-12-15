@@ -72,7 +72,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({
             
             router.refresh();
             router.push(`/${params.storeId}/billboards`)
-            toast.success("Store updated.");
+            toast.success(toastMessage);
         } catch (error) {
             toast.error(toastMessage)
         } finally{
