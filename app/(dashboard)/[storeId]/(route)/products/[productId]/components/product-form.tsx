@@ -113,7 +113,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             router.push(`/${params.storeId}/products`);
             toast.success("Products deleted.");
         } catch (error) {
-            toast.error("Make sure you removed all categoires using this billboard first.");
+            toast.error("Something went wrong.");
             console.log(error)
         } finally{
             setLoading(false);
@@ -345,7 +345,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                                 Archived
                             </FormLabel>
                             <FormDescription>
-                                This product will archived on the home page
+                                This product will not appear anywhere in the store.
                             </FormDescription>
                         </div>
                     </FormItem>

@@ -33,11 +33,11 @@ export const CellAction: React.FC<cellActionProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true)
-            await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+            await axios.delete(`/api/${params.storeId}/products/${data.id}`);
             router.refresh();
             toast.success( "Product deleted.");
         } catch (error) {
-            toast.error("Make sure you removed all categories using this billboards.")
+            toast.error("Something went wrong")
         } finally{
             setLoading(false)
             setOpen(false)
@@ -72,7 +72,7 @@ export const CellAction: React.FC<cellActionProps> = ({
                 Copy Id
             </DropdownMenuItem>
             <DropdownMenuItem
-            onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}
+            onClick={() => router.push(`/${params.storeId}/products/${data.id}`)}
             >
                 <Edit className='w-4 h-4 mr-2'/>
                 Update
