@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
-import { BillboardColumn } from './columns'
+import { ProductColumn } from './columns'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -11,7 +11,7 @@ import axios from 'axios';
 import { AlertModal } from '@/components/modals/alert-modal';
 
 interface cellActionProps {
-    data: BillboardColumn;
+    data: ProductColumn;
 }
 
 export const CellAction: React.FC<cellActionProps> = ({
@@ -27,7 +27,7 @@ export const CellAction: React.FC<cellActionProps> = ({
     const onCopy = (id:string) => {
         navigator.clipboard.writeText
         (id);
-        toast.success("Billboard Id copied to clipboard.");
+        toast.success("Product Id copied to clipboard.");
     }
 
     const onDelete = async () => {
@@ -35,7 +35,7 @@ export const CellAction: React.FC<cellActionProps> = ({
             setLoading(true)
             await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
             router.refresh();
-            toast.success( "Billboard deleted.");
+            toast.success( "Product deleted.");
         } catch (error) {
             toast.error("Make sure you removed all categories using this billboards.")
         } finally{
