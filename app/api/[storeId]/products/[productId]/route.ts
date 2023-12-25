@@ -101,8 +101,8 @@ export async function PATCH (
                 categoryId,
                 sizeId,
                 colorId,
-                isFeatured: false,
-                isArchived: false,
+                isFeatured,
+                isArchived,
             }
         });
 
