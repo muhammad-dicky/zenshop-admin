@@ -44,7 +44,7 @@ export async function PATCH (
         const {userId} = auth();
         const body = await req.json();
 
-        const {name, images,price, categoryId, sizeId, colorId, isFeatured, isArchived} = body;
+        const {name, stock, images, price, categoryId, sizeId, colorId, isFeatured, isArchived} = body;
 
         if(!userId){
             return new NextResponse("Unauthenticated", {status: 401});
@@ -52,6 +52,10 @@ export async function PATCH (
 
         if(!name){
             return new NextResponse("Name is required", {status: 400});
+        }
+
+        if(!stock){
+            return new NextResponse("Stock is required.", {status:400});
         }
 
         if(!price){
@@ -92,6 +96,7 @@ export async function PATCH (
             },
             data: {
                 name,
+                stock,
                 price,
                 images: {
                     deleteMany :{

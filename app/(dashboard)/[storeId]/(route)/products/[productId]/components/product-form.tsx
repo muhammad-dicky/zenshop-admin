@@ -36,6 +36,7 @@ interface ProductFormProps{
 
 const formSchema = z.object({
     name: z.string().min(1),
+    stock: z.coerce.number().min(1),
     images: z.object({url: z.string()}).array().min(1),
     price: z.coerce.number().min(1),
     categoryId: z.string().min(1),
@@ -76,6 +77,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             price: parseFloat(String(initialData?.price))
         } : {
             name: '',
+            stock: 0,
             images: [],
             price: 0,
             categoryId: '',
@@ -84,7 +86,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             isFeatured: false,
             isArchived: false 
         }
-    })
+    });
 
     const onSubmit = async (data: ProductFormValues) => {
         try {
@@ -184,6 +186,21 @@ const ProductForm: React.FC<ProductFormProps> = ({
                         </FormItem>
                     )}
                    />
+                   
+                    <FormField 
+                    control={form.control}
+                    name="stock"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Stock</FormLabel>
+                            <FormControl>
+                                <Input type="number" disabled={loading} placeholder="9.99" {...field}/>
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                   />
+
                     <FormField 
                     control={form.control}
                     name="price"

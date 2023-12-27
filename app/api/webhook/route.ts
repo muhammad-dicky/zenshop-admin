@@ -59,10 +59,10 @@ export async function POST(req: Request) {
                 }
             },
             data: {
-                isArchived: true
+                isArchived: false
             }
         });
-    }
+    };
 
 
     return new NextResponse(null, {status: 200});

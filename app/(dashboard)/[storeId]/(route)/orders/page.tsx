@@ -20,6 +20,9 @@ const Orders = async ({
                     product: true
                 }
             }
+        },
+        orderBy: {
+            createdAt:'desc'
         }
     });
 

@@ -32,9 +32,10 @@ const Products = async ({
         price: formatter.format(item.price.toNumber()),
         category: item.category.name,
         size: item.size.name,
+        stock: item.stock,
         color: item.color.value,
         createdAt: format(item.createdAt, "MMMM do, yyyy")
-    }))
+    }));
     
     return (
 
