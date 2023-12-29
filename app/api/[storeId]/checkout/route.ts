@@ -2,7 +2,6 @@ import prismadb from "@/lib/prismadb";
 import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import cors from "cors";
 
 
 
@@ -15,14 +14,6 @@ const corsHeaders = {
 export async function OPTIONS() {
     return NextResponse.json({}, { headers: corsHeaders });
 };
-
-// testing cuyyyy
-export const config = {
-    api: {
-        bodyParser: false
-    }
-}
-
 
 export async function POST(
     req: Request,
