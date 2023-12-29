@@ -19,6 +19,7 @@ export async function POST(
     {params}: {params: {storeId: string}}
 ){
     const {productIds} = await req.json();
+    const {totalPrice} = await req.json();
 
     if(!productIds || productIds.length === 0){
         return new NextResponse("Product ids are required.", {status:400});
@@ -42,7 +43,7 @@ export async function POST(
                 product_data: {
                     name: product.name
                 },
-                unit_amount: product.price.toNumber() * 100
+                unit_amount: totalPrice.toNumber() * 100
             }
         });
     });
