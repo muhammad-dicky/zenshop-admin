@@ -2,6 +2,9 @@ import prismadb from "@/lib/prismadb";
 import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import cors from "cors";
+
+
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -13,13 +16,23 @@ export async function OPTIONS() {
     return NextResponse.json({}, { headers: corsHeaders });
 };
 
+// testing cuyyyy
+export const config = {
+    api: {
+        bodyParser: false
+    }
+}
+
 
 export async function POST(
     req: Request,
     {params}: {params: {storeId: string}}
 ){
-    const {productIds} = await req.json();
-    const {totalPrice} = await req.json();
+    
+
+    const {productIds, totalPrice} = await req.json();
+    // const {totalPrice} = await req.json();
+    console.log(totalPrice)
 
     if(!productIds || productIds.length === 0){
         return new NextResponse("Product ids are required.", {status:400});
@@ -33,20 +46,35 @@ export async function POST(
         }
     });
 
-    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
-
-    products.forEach((product) => {
-        line_items.push({
+    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+        {
             quantity: 1,
             price_data: {
-                currency: 'USD',
-                product_data: {
-                    name: product.name
-                },
-                unit_amount: totalPrice.toNumber() * 100
-            }
-        });
-    });
+              currency: 'USD',
+              product_data: {
+                name: 'Total Price', // You can set any name you prefer
+              },
+              unit_amount: totalPrice * 100,
+            },
+          },
+    ];
+
+    // products.forEach((product) => {
+    //     line_items.push({
+    //         quantity: 1,
+    //         price_data: {
+    //             currency: 'USD',
+    //             product_data: {
+    //                 name: product.name
+    //             },
+    //             // unit_amount: product.price.toNumber() * 100
+    //             unit_amount: totalPrice * 100
+                
+    //         }
+    //     });
+    // });
+
+
 
     const order = await prismadb.order.create({
         data: {
