@@ -10,6 +10,7 @@ const Orders = async ({
 }: {
     params: {storeId: string}
 }) => {
+   
     const orders = await prismadb.order.findMany({
         where: {
             storeId: params.storeId,
@@ -30,10 +31,15 @@ const Orders = async ({
         id: item.id,
         phone: item.phone,
         address: item.address,
-        products: item.orderItems.map((orderItem) => orderItem.product.name).join(', '),
-        totalPrice: formatter.format(item.orderItems.reduce((total, item) => {
-            return total + Number(item.product.price)
-        }, 0)),
+        products: item.orderItems.map((orderItem) => {
+            const productName = orderItem.product.name || 'Name Product Tidak tersedia'
+            const productStock = orderItem.product.stock || 'Stock product tidak tersedia'
+            return `${productName} (Stock: ${productStock})`
+        }).join(', '),
+        totalPrice: formatter.format(item.total),
+        // totalPrice: formatter.format(item.orderItems.reduce((total, item) => {
+        //     return total + Number(item.product.price)
+        // }, 0)),
         isPaid: item.isPaid,
         createdAt: format(item.createdAt, "MMMM do, yyyy")
     }))

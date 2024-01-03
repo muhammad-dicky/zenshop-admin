@@ -21,9 +21,9 @@ export async function POST(
 ){
     
 
-    const {productIds, totalPrice} = await req.json();
+    const {productIds, totalPrice, quantityCheckout} = await req.json();
     // const {totalPrice} = await req.json();
-    console.log(totalPrice)
+    console.log(`Ini function POST: ${quantityCheckout}`)
 
     if(!productIds || productIds.length === 0){
         return new NextResponse("Product ids are required.", {status:400});
@@ -49,6 +49,20 @@ export async function POST(
             },
           },
     ];
+    // const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = products.map((product, index) => ({
+
+    //         quantity: quantityCheckout[index] || 1,
+    //         price_data: {
+    //           currency: 'USD',
+    //           product_data: {
+    //             name: 'Total Price', // You can set any name you prefer
+    //           },
+    //           unit_amount: totalPrice * 100,
+    //         },
+          
+    // }))
+       
+    
 
     // products.forEach((product) => {
     //     line_items.push({
@@ -66,11 +80,11 @@ export async function POST(
     // });
 
 
-
     const order = await prismadb.order.create({
         data: {
             storeId: params.storeId,
             isPaid: false,
+            total: totalPrice,
             orderItems: {
                 create: productIds.map((productId: string) => ({
                     product: {
@@ -97,6 +111,38 @@ export async function POST(
         }
     });
 
-    return NextResponse.json({url: session.url}, {headers: corsHeaders});
+    await updateProductStock(productIds, quantityCheckout);
 
+    return NextResponse.json({url: session.url}, {headers: corsHeaders});
+}
+
+async function updateProductStock(productIds: string[], quantityCheckout: number[]){
+    console.log(`ini update product: ${productIds}`);
+    console.log(`bawahnya update: ${quantityCheckout}`);
+
+
+    for(let i = 0; i < productIds.length; i++) {
+        const productId = productIds[i];
+        const quantity = quantityCheckout[i];
+
+        // Fetch the product from the Database;
+        const product = await prismadb.product.findUnique({
+            where:{
+                id: productId,
+            }
+        });
+
+        if(product) {
+            const newStock = product.stock - quantity;
+
+            await prismadb.product.update({
+                where: {
+                    id: productId,
+                },
+                data: {
+                    stock: newStock,
+                }
+            })
+        }
+    }
 }
