@@ -136,16 +136,35 @@ async function updateProductStock(productIds: string[], quantityCheckout: number
         });
 
         if(product) {
-            const newStock = product.stock - quantity;
+            const newStock = Math.floor(product.stock - quantity);
 
-            await prismadb.product.update({
-                where: {
-                    id: productId,
-                },
-                data: {
-                    stock: newStock,
-                }
-            })
+            if(newStock <= 0){
+                await prismadb.product.update({
+                    where: {
+                        id: productId,
+                    },
+                    data: {
+                        isArchived: true,
+                        isFeatured: true,
+                        stock: newStock
+                    }
+                });
+                console.log(`ini if pertama ${newStock}`)
+            }else{
+                console.log(`ini if kedua ${newStock}`)
+
+                await prismadb.product.update({
+                    where: {
+                        id: productId,
+                    },
+                    data: {
+                        stock: newStock,
+                    },
+    
+                })
+            }
+
+            
         }
     }
 }
