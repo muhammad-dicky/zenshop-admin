@@ -37,6 +37,9 @@ export async function POST(
         }
     });
 
+
+    // const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
         {
             quantity: 1,
@@ -64,7 +67,7 @@ export async function POST(
        
     
 
-    // products.forEach((product) => {
+    // products.forEach((product, order) => {
     //     line_items.push({
     //         quantity: 1,
     //         price_data: {
@@ -72,8 +75,8 @@ export async function POST(
     //             product_data: {
     //                 name: product.name
     //             },
-    //             // unit_amount: product.price.toNumber() * 100
-    //             unit_amount: totalPrice * 100
+    //             unit_amount: product.price.toNumber() * 100
+    //             // unit_amount: totalPrice * 100
                 
     //         }
     //     });
@@ -117,8 +120,8 @@ export async function POST(
 }
 
 async function updateProductStock(productIds: string[], quantityCheckout: number[]){
-    console.log(`ini update product: ${productIds}`);
-    console.log(`bawahnya update: ${quantityCheckout}`);
+    console.log(`ini id product: ${productIds}`);
+    console.log(`ini quantityCheckout: ${quantityCheckout}`);
 
 
     for(let i = 0; i < productIds.length; i++) {

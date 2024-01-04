@@ -5,11 +5,17 @@ import { OrderColumn } from "./components/columns";
 import { format } from 'date-fns';
 import { formatter } from "@/lib/utils";
 
+
+
+
+
 const Orders = async ({
     params
 }: {
-    params: {storeId: string}
+    params: {storeId: string},
 }) => {
+
+    // const {quantityCheckout} = await req.json();
    
     const orders = await prismadb.order.findMany({
         where: {
@@ -27,7 +33,9 @@ const Orders = async ({
         }
     });
 
-    const formattedOrders: OrderColumn[] = orders.map((item) => ({
+
+
+    const formattedOrders: OrderColumn[] = orders.map((item, quantity) => ({
         id: item.id,
         phone: item.phone,
         address: item.address,
