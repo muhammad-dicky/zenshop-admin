@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import {headers} from "next/headers";
 import { stripe } from "@/lib/stripe";
 import prismadb from "@/lib/prismadb";
+import { Product } from '@prisma/client';
 
 
 export async function POST(req: Request) {
@@ -52,16 +53,29 @@ export async function POST(req: Request) {
         
         const productIds = order.orderItems.map((orderItem) => orderItem.productId);
 
-        await prismadb.product.updateMany({
-            where: {
-                id: {
-                    in: [...productIds]
-                }
-            },
-            data: {
-                isArchived: false
-            }
-        });
+        
+        // await prismadb.product.updateMany({
+        //     where: {
+        //         id: {
+        //             in: [...productIds],
+        //         },
+        //     },
+        //     data: {
+
+        //     }
+        // });
+
+        // await prismadb.product.updateMany({
+        //     where: {
+        //         id: {
+        //             in: [...productIds]
+        //         }
+        //     },
+        //     data: {
+        //         isArchived: true
+        //     }
+        // });
+        
     };
 
 
