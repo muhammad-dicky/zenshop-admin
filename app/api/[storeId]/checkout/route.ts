@@ -127,45 +127,42 @@ async function updateProductStock(productIds: string[], quantityCheckout: number
         const productId = productIds[i];
         const quantity = quantityCheckout[i];
 
-        // Fetch the product from the Database;
-        const product = await prismadb.product.findUnique({
-            where: {
-                id: productId,
-            },
-        });
-
-        if (product) {
-            const newStock = Math.floor(product.stock - quantity);
-
-            // Update the product's stock and set isArchived to true if stock is zero or below
-            await prismadb.product.updateMany({
-                where: {
-                    id: productId,
-                },
-                data: {
-                    stock: newStock,
-                    isArchived: newStock <= 0 ? true : false,
-                },
-            });
-
-            // Fetch the updated product
-            const updatedProduct = await prismadb.product.findUnique({
+        // Use Prisma transaction to ensure atomicity
+        await prismadb.$transaction(async (prisma) => {
+            // Fetch the product from the Database
+            const product = await prisma.product.findUnique({
                 where: {
                     id: productId,
                 },
             });
 
-            await prismadb.product.update({
-                where: {
-                    id: productId,
-                },
-                data: {
-                    isArchived : true
+            if (product) {
+                const newStock = Math.floor(product.stock - quantity);
+
+                // Update the product's stock
+                await prisma.product.updateMany({
+                    where: {
+                        id: productId,
+                    },
+                    data: {
+                        stock: newStock,
+                        isArchived: newStock <= 0 ? true : false,
+                    },
+                });
+
+                // Update isArchived separately
+                if (newStock <= 0) {
+                    await prisma.product.update({
+                        where: {
+                            id: productId,
+                        },
+                        data: {
+                            isArchived: true,
+                        },
+                    });
                 }
-            });
-            // TODO: isArchived bisa true kalo transaksi dibatalkan, kalo lanjut malah g jalan
-
-            console.log(`Updated product: ${JSON.stringify(updatedProduct)}`);
-        }
+            }
+        });
     }
 }
+
