@@ -12,7 +12,7 @@ export async function POST(
         const {userId} = auth();
         const body = await req.json();
 
-        const {name ,stock , images, categoryId, price, colorId, sizeId, isFeatured, isArchived, } = body;
+        const {name ,stock , images, categoryId, price, colorId, sizeId, subcatId, isFeatured, isArchived, } = body;
 
         if(!userId){
             return new NextResponse("Unauthenticated", {status:401});
@@ -45,6 +45,10 @@ export async function POST(
             return new NextResponse("Size is requred.", {status:400});
         }
 
+        if(!subcatId){
+            return new NextResponse("Subcat is requred.", {status:400});
+        }
+
 
         if(!params.storeId){
             return new NextResponse("StoreID is required", {status: 400})
@@ -74,6 +78,7 @@ export async function POST(
             }
            },
            sizeId,
+           subcatId,
            price,
            colorId,
            categoryId,
@@ -102,6 +107,7 @@ export async function GET(
         const categoryId = searchParams.get("categoryId") || undefined;
         const colorId = searchParams.get("colorId") || undefined;
         const sizeId = searchParams.get("sizeId") || undefined;
+        const subcatId = searchParams.get("subcatId") || undefined;
         const isFeatured = searchParams.get("isFeatured");
 
         if(!params.storeId){
@@ -114,6 +120,7 @@ export async function GET(
             categoryId,
             colorId,
             sizeId,
+            subcatId,
             isFeatured: isFeatured ? true : undefined,
             isArchived: false
            },
@@ -121,7 +128,8 @@ export async function GET(
             images: true,
             category: true,
             color: true,
-            size: true
+            size: true,
+            subcat: true,
            },
            orderBy: {
             createdAt: "desc"

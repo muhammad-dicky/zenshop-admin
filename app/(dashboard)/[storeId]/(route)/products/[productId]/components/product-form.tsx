@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { useOrigin } from "@/hooks/use-origin";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Billboard, Category, Color, Image, Product, Size, Store } from "@prisma/client";
+import { Billboard, Category, Color, Image, Product, Size, Store, Subcat } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -31,6 +31,7 @@ interface ProductFormProps{
     categories: Category[];
     colors: Color[];
     sizes: Size[];
+    subcat: Subcat[];
 }
 
 
@@ -42,6 +43,7 @@ const formSchema = z.object({
     categoryId: z.string().min(1),
     colorId: z.string().min(1),
     sizeId: z.string().min(1),
+    subcatId: z.string().min(1),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional()
 });
@@ -53,7 +55,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
     initialData,
     categories,
     colors,
-    sizes
+    sizes,
+    subcat
 }) => {
     const params = useParams();
     const router = useRouter();
@@ -83,6 +86,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             categoryId: '',
             colorId: '',
             sizeId: '',
+            subcatId: '',
             isFeatured: false,
             isArchived: false 
         }
@@ -278,6 +282,42 @@ const ProductForm: React.FC<ProductFormProps> = ({
                                         value={size.id}
                                         >
                                             {size.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                   />
+                   
+                   <FormField 
+                    control={form.control}
+                    name="subcatId"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Subcat</FormLabel>
+                            <Select
+                            disabled={loading}
+                            onValueChange={field.onChange}
+                            value={field.value}
+                            defaultValue={field.value}
+                            >
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue
+                                        defaultValue={field.value}
+                                        placeholder="Select a subcat"
+                                        />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {subcat.map((subcat) => (
+                                        <SelectItem
+                                        key={subcat.id}
+                                        value={subcat.id}
+                                        >
+                                            {subcat.name}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>

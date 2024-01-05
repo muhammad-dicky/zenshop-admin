@@ -21,6 +21,7 @@ model Store {
   color      Color[]     @relation("StoreToColor")
   products   Product[]   @relation("StoreToProduct")
   order      Order[]     @relation("StoreToOrder")
+  subcat     Subcat[]    @relation("StoreToSubcat")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
@@ -66,6 +67,19 @@ model Size {
   @@index([storeId])
 }
 
+model Subcat {
+  id        String    @id @default(uuid())
+  storeId   String
+  store     Store     @relation("StoreToSubcat", fields: [storeId], references: [id])
+  name      String
+  value     String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
 model Color {
   id        String    @id @default(uuid())
   storeId   String
@@ -98,11 +112,14 @@ model Product {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   orderItems OrderItem[]
+  subcatId   String?
+  subcat     Subcat?     @relation(fields: [subcatId], references: [id])
 
   @@index([storeId])
   @@index([categoryId])
   @@index([sizeId])
   @@index([colorId])
+  @@index([subcatId])
 }
 
 model Image {

@@ -22,6 +22,7 @@ export async function GET (
                 images: true,
                 color: true,
                 size: true,
+                subcat: true,
                 category: true
             }
         });
@@ -44,7 +45,7 @@ export async function PATCH (
         const {userId} = auth();
         const body = await req.json();
 
-        const {name, stock, images, price, categoryId, sizeId, colorId, isFeatured, isArchived} = body;
+        const {name, stock, images, price, categoryId, sizeId, subcatId, colorId, isFeatured, isArchived} = body;
 
         if(!userId){
             return new NextResponse("Unauthenticated", {status: 401});
@@ -66,6 +67,9 @@ export async function PATCH (
             return new NextResponse("Image URL is required", {status: 400});
         }
         if(!sizeId){
+            return new NextResponse("Size is required", {status: 400});
+        }
+        if(!subcatId){
             return new NextResponse("Size is required", {status: 400});
         }
         if(!colorId){
@@ -105,6 +109,7 @@ export async function PATCH (
                 },
                 categoryId,
                 sizeId,
+                subcatId,
                 colorId,
                 isFeatured,
                 isArchived,

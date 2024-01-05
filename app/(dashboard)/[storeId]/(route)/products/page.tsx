@@ -17,7 +17,8 @@ const Products = async ({
         include: {
             category : true,
             size: true,
-            color: true
+            subcat: true,
+            color: true,
         },
         orderBy: {
             createdAt: 'desc'
@@ -32,6 +33,7 @@ const Products = async ({
         price: formatter.format(item.price.toNumber()),
         category: item.category.name,
         size: item.size.name,
+        subcat: item.subcat!.name,
         stock: item.stock,
         color: item.color.value,
         createdAt: format(item.createdAt, "MMMM do, yyyy")

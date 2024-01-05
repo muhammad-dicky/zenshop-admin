@@ -29,6 +29,12 @@ params: { productId: string, storeId: string }
         }
     })
 
+    const subcat = await prismadb.subcat.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    })
+
     const colors = await prismadb.color.findMany({
         where: {
             storeId: params.storeId
@@ -42,6 +48,7 @@ params: { productId: string, storeId: string }
                 <ProductForm
                 categories={categories}
                 sizes={sizes}
+                subcat={subcat}
                 colors={colors}
                 initialData={product}
                 />
