@@ -73,11 +73,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
     const toastMessage = initialData ? "Product updated." : "Product created.";
     const action = initialData ? "Save changes" : "Create";
 
-    const form = useForm<ProductFormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: initialData ? {
-            ...initialData,
-            price: parseFloat(String(initialData?.price))
+    const defaultValues = initialData ? {
+        ...initialData,
+        price: parseFloat(String(initialData?.price))
         } : {
             name: '',
             stock: 0,
@@ -90,7 +88,30 @@ const ProductForm: React.FC<ProductFormProps> = ({
             isFeatured: false,
             isArchived: false 
         }
-    });
+    
+    const form = useForm<ProductFormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues
+    })
+
+    // const form = useForm<ProductFormValues>({
+    //     resolver: zodResolver(formSchema),
+    //     defaultValues: initialData ? {
+    //         ...initialData,
+    //         price: parseFloat(String(initialData?.price))
+    //     } : {
+    //         name: '',
+    //         stock: 0,
+    //         images: [],
+    //         price: 0,
+    //         categoryId: '',
+    //         colorId: '',
+    //         sizeId: '',
+    //         subcatId: '',
+    //         isFeatured: false,
+    //         isArchived: false 
+    //     }
+    // });
 
     const onSubmit = async (data: ProductFormValues) => {
         try {
