@@ -33,7 +33,7 @@ const Orders = async ({
 
 
 
-    const formattedOrders: OrderColumn[] = orders.map((item, quantity) => ({
+    const formattedOrders: OrderColumn[] = orders.map((item) => ({
         id: item.id,
         phone: item.phone,
         address: item.address,
