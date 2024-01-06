@@ -89,8 +89,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
             isArchived: false 
         }
     
+       
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(formSchema),
+         // @ts-ignore
         defaultValues
     })
 
