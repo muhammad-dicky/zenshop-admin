@@ -43,7 +43,7 @@ export async function POST(
         {
             quantity: 1,
             price_data: {
-              currency: 'USD',
+              currency: 'IDR',
               product_data: {
                 name: 'Total Price', // You can set any name you prefer
               },
