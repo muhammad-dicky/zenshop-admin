@@ -7,8 +7,6 @@ import { formatter } from "@/lib/utils";
 
 
 
-
-
 const Orders = async ({
     params
 }: {
@@ -41,8 +39,8 @@ const Orders = async ({
         address: item.address,
         products: item.orderItems.map((orderItem) => {
             const productName = orderItem.product.name || 'Name Product Tidak tersedia'
-            const productStock = orderItem.product.stock || 'Stock product tidak tersedia'
-            return `${productName} (Stock: ${productStock})`
+            const productStock = orderItem.quantity || 'Quantity tidak tersedia'
+            return `${productName} (Quantity Order: ${productStock})`
         }).join(', '),
         totalPrice: formatter.format(item.total),
         // totalPrice: formatter.format(item.orderItems.reduce((total, item) => {

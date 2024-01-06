@@ -6,6 +6,7 @@ import prismadb from "@/lib/prismadb";
 import { Product } from '@prisma/client';
 
 
+
 export async function POST(req: Request) {
     const body = await req.text();
     const signature = headers().get("Stripe-Signature") as string;
@@ -25,6 +26,7 @@ export async function POST(req: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
     const address = session?.customer_details?.address;
 
+    
     const addressComponents = [
         address?.line1,
         address?.line2,
@@ -50,10 +52,10 @@ export async function POST(req: Request) {
                 orderItems: true,
             },
         });
-        
+
         const productIds = order.orderItems.map((orderItem) => orderItem.productId);
 
-        
+
         // await prismadb.product.updateMany({
         //     where: {
         //         id: {

@@ -20,7 +20,6 @@ export async function POST(
     {params}: {params: {storeId: string}}
 ){
     
-
     const {productIds, totalPrice, quantityCheckout} = await req.json();
     // const {totalPrice} = await req.json();
     console.log(`Ini function POST: ${quantityCheckout}`)
@@ -89,12 +88,13 @@ export async function POST(
             isPaid: false,
             total: totalPrice,
             orderItems: {
-                create: productIds.map((productId: string) => ({
+                create: productIds.map((productId: string, index: number) => ({
                     product: {
                         connect: {
-                            id: productId
-                        }
-                    }
+                            id: productId,
+                        },
+                    },
+                    quantity:quantityCheckout[index] ||1
                 }))
             }
         }
