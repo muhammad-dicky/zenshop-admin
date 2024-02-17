@@ -9,9 +9,10 @@ import { authMiddleware } from "@clerk/nextjs";
 
 
 // ASLI
-// export default authMiddleware({
-//   publicRoutes: ["/api/:path*"]
-// });
+export default authMiddleware({
+  publicRoutes: ["/api/:path*"],
+  ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)", "/sign-in"]
+});
 
 
 // TESTING
@@ -28,10 +29,10 @@ import { authMiddleware } from "@clerk/nextjs";
 //   // An array of routes to be ignored by the authentication middleware.
 //   ignoredRoutes: ['/api/webhook/clerk'],
 //   });
-export default authMiddleware({
-  publicRoutes: ["/sign-in"],
-  ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)", "/sign-in"]
-});
+// export default authMiddleware({
+//   publicRoutes: ["/sign-in"],
+//   ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)", "/sign-in"]
+// });
 
  
 export const config = {
