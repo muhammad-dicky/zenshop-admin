@@ -6,13 +6,13 @@ import { authMiddleware } from "@clerk/nextjs";
 
 
 // TESTING
-// export default authMiddleware({
-//   publicRoutes: ["/api/:path*"]
-// });
+export default authMiddleware({
+  publicRoutes: ["/api/:path*"]
+});
 
 
 
-export default authMiddleware({ publicRoutes: ['/', '/api/webhook/clerk'], ignoredRoutes: ['/api/webhook/clerk'], });
+// export default authMiddleware({ publicRoutes: ['/', '/api/webhook/clerk'], ignoredRoutes: ['/api/webhook/clerk'], });
  
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
