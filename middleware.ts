@@ -29,7 +29,8 @@ import { authMiddleware } from "@clerk/nextjs";
 //   ignoredRoutes: ['/api/webhook/clerk'],
 //   });
 export default authMiddleware({
-  publicRoutes: ["/"]
+  publicRoutes: ["/sign-in"],
+  ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)", "/sign-in"]
 });
 
  
