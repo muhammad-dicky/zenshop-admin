@@ -28,7 +28,9 @@ import { authMiddleware } from "@clerk/nextjs";
 //   // An array of routes to be ignored by the authentication middleware.
 //   ignoredRoutes: ['/api/webhook/clerk'],
 //   });
-export default authMiddleware();
+export default authMiddleware({
+  publicRoutes: ["/"]
+});
 
  
 export const config = {
