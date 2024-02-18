@@ -9,10 +9,12 @@ import { authMiddleware } from "@clerk/nextjs";
 
 
 // ASLI
-export default authMiddleware({
-  publicRoutes: ["/api/:path*"],
-  // ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)"]
-});
+// export default authMiddleware({
+//   publicRoutes: ["/api/:path*"]
+// });
+
+
+export default authMiddleware();
 
 
 // TESTING
